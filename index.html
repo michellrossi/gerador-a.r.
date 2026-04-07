@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de AR - Correios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --correios-red: #cc0000;
+            --correios-yellow: #f9d616;
+            --border-color: #cc0000;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        /* Estilos do Formulário AR (Preview) */
+        .ar-card {
+            width: 186mm;
+            height: 114mm;
+            background: white;
+            border: 2px solid var(--border-color);
+            position: relative;
+            box-sizing: border-box;
+            padding: 2mm;
+            color: #000;
+            font-size: 8pt;
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .ar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5pt solid var(--border-color);
+            padding-bottom: 1mm;
+            margin-bottom: 1mm;
+        }
+
+        .ar-title {
+            font-weight: 800;
+            font-size: 11pt;
+            color: var(--correios-red);
+            text-transform: uppercase;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .ar-section-title {
+            font-size: 7pt;
+            font-weight: bold;
+            color: var(--correios-red);
+            text-transform: uppercase;
+            margin-bottom: 1px;
+        }
+
+        .ar-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 0;
+            border: 1pt solid var(--border-color);
+        }
+
+        .ar-cell {
+            border: 0.5pt solid var(--border-color);
+            padding: 1mm;
+            min-height: 8mm;
+        }
+
+        .ar-label {
+            font-size: 6pt;
+            font-weight: bold;
+            color: var(--correios-red);
+            display: block;
+            text-transform: uppercase;
+            margin-bottom: 1mm;
+        }
+
+        .ar-value {
+            font-size: 9pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .logo-placeholder {
+            width: 40px;
+            height: 25px;
+            background: var(--correios-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 6pt;
+            border-radius: 2px;
+        }
+
+        /* Layout de Impressão */
+        @media print {
+            body { background: white; margin: 0; padding: 0; }
+            .no-print { display: none !important; }
+            .print-container {
+                width: 210mm;
+                height: 297mm;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                padding: 10mm 0;
+            }
+            .ar-card {
+                box-shadow: none;
+                border: 2px solid var(--border-color) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Estilo da área de preenchimento (UI) */
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--correios-red);
+            ring: 2px var(--correios-red);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 no-print">
+        <!-- Coluna de Inputs -->
+        <div class="bg-white p-6 rounded-xl shadow-lg">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold">AR</div>
+                <h1 class="text-2xl font-bold text-gray-800">Gerador de AR Profissional</h1>
+            </div>
+
+            <form id="arForm" class="space-y-4">
+                <div class="input-group">
+                    <label>Nome ou Razão Social do Destinatário</label>
+                    <input type="text" id="in_nome" placeholder="Ex: João da Silva" maxlength="60">
+                </div>
+                
+                <div class="input-group">
+                    <label>Endereço Completo</label>
+                    <input type="text" id="in_endereco" placeholder="Rua, Número, Complemento, Bairro">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="input-group">
+                        <label>CEP</label>
+                        <input type="text" id="in_cep" placeholder="00000-000" maxlength="9">
+                    </div>
+                    <div class="input-group">
+                        <label>Cidade</label>
+                        <input type="text" id="in_cidade" placeholder="Ex: São Paulo">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="input-group">
+                        <label>UF</label>
+                        <input type="text" id="in_uf" placeholder="Ex: SP" maxlength="2">
+                    </div>
+                    <div class="input-group">
+                        <label>País</label>
+                        <input type="text" id="in_pais" value="BRASIL">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Declaração de Conteúdo (Opcional)</label>
+                    <textarea id="in_conteudo" rows="2" placeholder="Ex: Documentos Diversos"></textarea>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <button type="button" onclick="window.print()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        Imprimir / Salvar PDF
+                    </button>
+                    
+                    <button type="button" id="btnWord" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2 transition">
+                        Gerar Word (.docx)
+                    </button>
+
+                    <button type="reset" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg font-semibold transition">
+                        Limpar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Coluna de Preview (Fixed on scroll for desktop) -->
+        <div class="relative">
+            <div class="sticky top-8">
+                <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Pré-visualização</h2>
+                
+                <!-- O AR real -->
+                <div id="ar-preview-element" class="ar-card shadow-2xl scale-[0.8] origin-top md:scale-100">
+                    <div class="ar-header">
+                        <div class="logo-placeholder">CORREIOS</div>
+                        <div class="ar-title">Aviso de Recebimento</div>
+                        <div class="text-[6pt] text-right font-bold text-red-600">PREENCHER COM<br>LETRA DE FORMA</div>
+                    </div>
+
+                    <div class="ar-section-title">Destinatário do Objeto</div>
+                    
+                    <div class="ar-grid">
+                        <div class="ar-cell col-span-12">
+                            <span class="ar-label">Nome ou Razão Social do Destinatário</span>
+                            <div class="ar-value" id="view_nome">---</div>
+                        </div>
+                        <div class="ar-cell col-span-12">
+                            <span class="ar-label">Endereço</span>
+                            <div class="ar-value" id="view_endereco">---</div>
+                        </div>
+                        <div class="ar-cell col-span-4">
+                            <span class="ar-label">CEP</span>
+                            <div class="ar-value" id="view_cep">---</div>
+                        </div>
+                        <div class="ar-cell col-span-5">
+                            <span class="ar-label">Cidade</span>
+                            <div class="ar-value" id="view_cidade">---</div>
+                        </div>
+                        <div class="ar-cell col-span-1">
+                            <span class="ar-label">UF</span>
+                            <div class="ar-value" id="view_uf">--</div>
+                        </div>
+                        <div class="ar-cell col-span-2">
+                            <span class="ar-label">País</span>
+                            <div class="ar-value" id="view_pais">BRASIL</div>
+                        </div>
+
+                        <div class="ar-cell col-span-7 row-span-2 text-[6pt] leading-tight">
+                            <span class="ar-label">Uso dos Dados</span>
+                            Dou ciência dos dados coletados no ato da entrega do objeto, que poderão ser utilizados para fins de comprovação da prestação do serviço.
+                        </div>
+                        <div class="ar-cell col-span-5 row-span-2">
+                            <span class="ar-label">Declaração de Conteúdo (Opcional)</span>
+                            <div class="ar-value text-[7pt]" id="view_conteudo">---</div>
+                        </div>
+
+                        <div class="ar-cell col-span-8">
+                            <span class="ar-label">Assinatura do Recebedor</span>
+                            <div class="mt-4 border-b border-black w-full opacity-30"></div>
+                        </div>
+                        <div class="ar-cell col-span-2">
+                            <span class="ar-label">Data de Rec.</span>
+                            <div class="mt-4 text-[9pt]">___/___/___</div>
+                        </div>
+                        <div class="ar-cell col-span-2 row-span-3 text-center flex flex-col justify-between">
+                            <span class="ar-label">Carimbo de Entrega</span>
+                            <div class="border-2 border-dashed border-gray-300 h-full mt-1"></div>
+                        </div>
+
+                        <div class="ar-cell col-span-10">
+                            <span class="ar-label">Nome Legível do Recebedor</span>
+                            <div class="mt-4 border-b border-black w-full opacity-30"></div>
+                        </div>
+
+                        <div class="ar-cell col-span-5">
+                            <span class="ar-label">Doc. Identificação</span>
+                            <div class="mt-4 border-b border-black w-full opacity-30"></div>
+                        </div>
+                        <div class="ar-cell col-span-5">
+                            <span class="ar-label">Rubrica/Mat. Empregado</span>
+                            <div class="mt-4 border-b border-black w-full opacity-30"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center font-bold text-red-600 mt-1 text-[7pt]">
+                        ENDEREÇO PARA DEVOLUÇÃO NO VERSO
+                    </div>
+                </div>
+
+                <p class="text-xs text-gray-400 mt-6 text-center italic">
+                    Nota: O verso (Remetente) deve ser impresso separadamente ou preenchido manualmente no formulário padrão.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container oculto para Impressão (Duplicado) -->
+    <div id="print-area" class="hidden print-container">
+        <!-- O JS irá clonar o preview aqui duas vezes -->
+    </div>
+
+    <script>
+        // Sincronização em tempo real
+        const fields = [
+            { id: 'in_nome', view: 'view_nome' },
+            { id: 'in_endereco', view: 'view_endereco' },
+            { id: 'in_cep', view: 'view_cep' },
+            { id: 'in_cidade', view: 'view_cidade' },
+            { id: 'in_uf', view: 'view_uf' },
+            { id: 'in_pais', view: 'view_pais' },
+            { id: 'in_conteudo', view: 'view_conteudo' }
+        ];
+
+        fields.forEach(field => {
+            const input = document.getElementById(field.id);
+            const view = document.getElementById(field.view);
+            
+            input.addEventListener('input', () => {
+                view.innerText = input.value.trim() || '---';
+                if (field.id === 'in_uf') input.value = input.value.toUpperCase();
+            });
+        });
+
+        // Máscara de CEP
+        document.getElementById('in_cep').addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,5})(\d{0,3})/);
+            e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
+        });
+
+        // Lógica de Impressão (Duplicação)
+        window.onbeforeprint = function() {
+            const printArea = document.getElementById('print-area');
+            const preview = document.getElementById('ar-preview-element');
+            printArea.innerHTML = '';
+            
+            const clone1 = preview.cloneNode(true);
+            const clone2 = preview.cloneNode(true);
+            
+            clone1.classList.remove('scale-[0.8]', 'md:scale-100', 'shadow-2xl');
+            clone2.classList.remove('scale-[0.8]', 'md:scale-100', 'shadow-2xl');
+            
+            printArea.appendChild(clone1);
+            
+            // Adiciona uma linha de corte opcional entre os dois
+            const hr = document.createElement('div');
+            hr.style.width = '80%';
+            hr.style.borderTop = '1px dashed #ccc';
+            hr.style.margin = '20mm 0';
+            printArea.appendChild(hr);
+
+            printArea.appendChild(clone2);
+            printArea.classList.remove('hidden');
+        };
+
+        window.onafterprint = function() {
+            document.getElementById('print-area').classList.add('hidden');
+        };
+
+        // Exportação para Word (Formato Simples)
+        document.getElementById('btnWord').addEventListener('click', function() {
+            const content = document.getElementById('ar-preview-element').innerText;
+            const blob = new Blob(['\ufeff', content], {
+                type: 'application/msword'
+            });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'AR_Correios_Dados.doc';
+            link.click();
+        });
+    </script>
+</body>
+</html>
