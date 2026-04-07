@@ -115,6 +115,10 @@
             height: 13.5mm;
         }
 
+        .linha-remetente {
+            height: 12mm;
+        }
+
         .logo-placeholder {
             width: 35px;
             height: 22px;
@@ -131,8 +135,8 @@
         /* Elementos específicos do Verso - Seta Lateral */
         .seta-container {
             position: absolute;
-            left: 2mm;
-            top: 50mm;
+            left: 0mm;
+            top: 15mm;
             width: 10mm;
             height: 25mm;
             display: flex;
@@ -266,7 +270,7 @@
             <div id="ar-frente-element" class="ar-card ar-frente shadow-xl scale-[0.75] origin-top md:scale-90 lg:scale-100">
                 <div class="ar-header">
                     <div class="logo-box">
-                        <img src="https://iili.io/B7aAnFp.md.jpg" alt="Correios" class="h-[20px] object-contain">
+                        <img src="https://iili.io/B71iY5F.webp" alt="Correios" class="h-[20px] object-contain">
                     </div>
                     <div class="ar-title">Aviso de Recebimento</div>
                     <div class="text-[5pt] text-right font-bold text-red-600 leading-tight">PREENCHER COM<br>LETRA DE FORMA</div>
@@ -346,7 +350,7 @@
             <div id="ar-verso-element" class="ar-card ar-verso opacity-70 scale-[0.75] origin-top md:scale-90 lg:scale-100">
                 <div class="flex justify-between items-start border-b border-red-600 pb-1 mb-1">
                     <div class="flex gap-2 items-center">
-                        <img src="https://iili.io/B7aAnFp.md.jpg" alt="Correios" class="h-[20px] object-contain">
+                        <img src="https://iili.io/B71iY5F.webp" alt="Correios" class="h-[20px] object-contain">
                         <div class="border border-red-600 p-1 text-[7pt] font-bold text-red-600 text-center uppercase">Aviso de<br>Recebimento</div>
                         <div class="text-3xl font-black text-red-600 ml-2">AR</div>
                     </div>
@@ -361,13 +365,13 @@
                         <div class="ar-cell col-span-7 p-0">
                             <div class="bg-white text-[6pt] font-bold text-red-600 text-center border-b border-red-600 py-0.5">TENTATIVAS DE ENTREGA</div>
                             <div class="grid grid-cols-3 h-full">
-                                <div class="border-r border-red-600 p-1">
+                                <div class="border-r border-red-600 p-1 flex items-center justify-center">
                                     <div class="text-[7pt] text-center font-bold mt-1">___ / ___ / ___</div>
                                 </div>
-                                <div class="border-r border-red-600 p-1">
+                                <div class="border-r border-red-600 p-1 flex items-center justify-center">
                                     <div class="text-[7pt] text-center font-bold mt-1">___ / ___ / ___</div>
                                 </div>
-                                <div class="p-1">
+                                <div class="p-1 flex items-center justify-center">
                                     <div class="text-[7pt] text-center font-bold mt-1">___ / ___ / ___</div>
                                 </div>
                             </div>
@@ -375,15 +379,15 @@
                         <div class="ar-cell col-span-5 h-10 border-r border-red-600">
                         <span class="ar-label">Unidade de Postagem</span>
                     </div>
-                    <div class="col-span-7 grid grid-cols-3 border-t border-red-600">
-                        <div class="border-r border-red-600 p-1 text-center text-[7pt] font-bold">____ : ____ h</div>
-                        <div class="border-r border-red-600 p-1 text-center text-[7pt] font-bold">____ : ____ h</div>
-                        <div class="p-1 text-center text-[7pt] font-bold">____ : ____ h</div>
+                    <div class="col-span-7 grid grid-cols-3 border-t border-red-600 h-full">
+                        <div class="border-r border-red-600 p-1 flex items-center justify-center text-[7pt] font-bold h-full">____ : ____ h</div>
+                        <div class="border-r border-red-600 p-1 flex items-center justify-center text-[7pt] font-bold h-full">____ : ____ h</div>
+                        <div class="p-1 flex items-center justify-center text-[7pt] font-bold h-full">____ : ____ h</div>
                     </div>
                 </div>
 
                 <div class="mt-2 relative pl-10">
-                        <!-- Seta Vermelha Ajustada conforme imagem -->
+                        <!-- Texto Lateral Ajustado para subir e ficar alinhado -->
                         <div class="seta-container">
                             <div class="seta-vermelha">
                                 <div class="seta-texto uppercase">Endereço para Devolução</div>
@@ -391,24 +395,20 @@
                         </div>
 
                         <div class="ar-grid">
-                            <div class="ar-cell col-span-12">
+                            <div class="ar-cell col-span-12 linha-remetente flex flex-col">
                                 <span class="ar-label">Nome ou Razão Social do Remetente</span>
-                                <div class="h-5"></div>
                             </div>
-                            <div class="ar-cell col-span-12">
+                            <div class="ar-cell col-span-12 linha-remetente flex flex-col">
                                 <span class="ar-label">Endereço para Devolução</span>
-                                <div class="h-5"></div>
                             </div>
-                            <div class="ar-cell col-span-6">
+                            <!-- CEP Removido, Cidade expandida -->
+                            <div class="ar-cell col-span-9 linha-remetente flex flex-col">
                                 <span class="ar-label">Cidade</span>
                             </div>
-                            <div class="ar-cell col-span-1">
+                            <div class="ar-cell col-span-1 linha-remetente flex flex-col">
                                 <span class="ar-label">UF</span>
                             </div>
-                            <div class="ar-cell col-span-3">
-                                <span class="ar-label">CEP</span>
-                            </div>
-                            <div class="ar-cell col-span-2 bg-white flex items-center justify-center font-black text-red-600 text-[10pt] border-l border-red-600">BRASIL</div>
+                            <div class="ar-cell col-span-2 bg-white flex items-center justify-center font-black text-red-600 text-[10pt] border-l border-red-600 linha-remetente">BRASIL</div>
                         </div>
                         
                         <!-- Caixas de Código na Base -->
@@ -469,7 +469,7 @@
             printArea.innerHTML = '';
             
             const cloneFrente = frente.cloneNode(true);
-        const cloneVerso = verso.cloneNode(true);
+            const cloneVerso = verso.cloneNode(true);
         
         // Limpa classes de preview
         [cloneFrente, cloneVerso].forEach(el => {
