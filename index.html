@@ -117,8 +117,9 @@
             gap: 5px;
         }
 
+        /* Travamento da altura para alinhar perfeitamente as linhas */
         .linha-assinatura {
-            height: 13.5mm;
+            height: 12mm;
         }
 
         .linha-remetente {
@@ -142,7 +143,7 @@
         .seta-container {
             position: absolute;
             left: 0mm;
-            top: 15mm;
+            top: 3mm; /* Subiu o alinhamento */
             width: 10mm;
             height: 25mm;
             display: flex;
@@ -324,15 +325,14 @@
                     </div>
                     <div class="ar-cell col-span-2 linha-assinatura flex flex-col justify-between pb-1">
                         <span class="ar-label">Data de Rec.</span>
-                        <div class="mt-auto flex gap-1 items-end">
-                            <span class="border-b border-black w-3 opacity-30"></span>/
-                            <span class="border-b border-black w-3 opacity-30"></span>/
-                            <span class="border-b border-black w-3 opacity-30"></span>
+                        <div class="mt-auto flex justify-center items-end text-[6.5pt] font-bold text-gray-500 tracking-wider">
+                            ______ / ______ / ________
                         </div>
                     </div>
-                    <div class="ar-cell col-span-2 row-span-3 text-center flex flex-col">
+                    <!-- Carimbo ajustado com Absolute para não esticar a grade e alinhar com precisão -->
+                    <div class="ar-cell col-span-2 row-span-3 text-center relative">
                         <span class="ar-label">Carimbo</span>
-                        <div class="border border-dashed border-gray-200 flex-grow mt-1"></div>
+                        <div class="border border-dashed border-gray-200 absolute top-[5mm] bottom-1 left-1 right-1"></div>
                     </div>
 
                     <div class="ar-cell col-span-10 linha-assinatura flex flex-col justify-between">
@@ -366,19 +366,19 @@
                 <div class="ar-grid">
                         <div class="ar-cell col-span-5 flex flex-col">
                             <span class="ar-label">Data de Postagem</span>
-                            <div class="flex-grow flex items-center justify-center font-bold text-[9pt]">___ / ___ / ___</div>
+                            <div class="flex-grow flex items-center justify-center font-bold text-[7.5pt] text-gray-600 tracking-wider">______ / ______ / ________</div>
                         </div>
                         <div class="ar-cell col-span-7 p-0 flex flex-col">
                             <div class="bg-white text-[6pt] font-bold text-red-600 text-center border-b border-[#cc0000] py-0.5">TENTATIVAS DE ENTREGA</div>
                             <div class="grid grid-cols-3 flex-grow">
                                 <div class="border-r border-[#cc0000] p-1 flex items-center justify-center">
-                                    <div class="text-[7pt] text-center font-bold">___ / ___ / ___</div>
+                                    <div class="text-[6.5pt] text-center font-bold text-gray-600 tracking-wider">______ / ______ / ________</div>
                                 </div>
                                 <div class="border-r border-[#cc0000] p-1 flex items-center justify-center">
-                                    <div class="text-[7pt] text-center font-bold">___ / ___ / ___</div>
+                                    <div class="text-[6.5pt] text-center font-bold text-gray-600 tracking-wider">______ / ______ / ________</div>
                                 </div>
                                 <div class="p-1 flex items-center justify-center">
-                                    <div class="text-[7pt] text-center font-bold">___ / ___ / ___</div>
+                                    <div class="text-[6.5pt] text-center font-bold text-gray-600 tracking-wider">______ / ______ / ________</div>
                                 </div>
                             </div>
                         </div>
@@ -393,7 +393,6 @@
                 </div>
 
                 <div class="mt-2 relative pl-10">
-                        <!-- Texto Lateral Ajustado para subir e ficar alinhado -->
                         <div class="seta-container">
                             <div class="seta-vermelha">
                                 <div class="seta-texto uppercase">Endereço para Devolução</div>
@@ -407,14 +406,12 @@
                             <div class="ar-cell col-span-12 linha-remetente flex flex-col">
                                 <span class="ar-label">Endereço para Devolução</span>
                             </div>
-                            <!-- CEP Removido, Cidade expandida -->
                             <div class="ar-cell col-span-9 linha-remetente flex flex-col">
                                 <span class="ar-label">Cidade</span>
                             </div>
                             <div class="ar-cell col-span-1 linha-remetente flex flex-col">
                                 <span class="ar-label">UF</span>
                             </div>
-                            <!-- Removida a classe border-l manual para manter a espessura unificada do grid -->
                             <div class="ar-cell col-span-2 bg-white flex items-center justify-center font-black text-red-600 text-[10pt] linha-remetente">BRASIL</div>
                         </div>
                         
