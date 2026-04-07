@@ -124,38 +124,38 @@
             border-radius: 2px;
         }
 
-        /* Elementos específicos do Verso */
-        .tentativa-box {
+        /* Elementos específicos do Verso - Seta Lateral */
+        .seta-container {
+            position: absolute;
+            left: 2mm;
+            top: 50mm;
+            width: 10mm;
+            height: 25mm;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-left: 0.5pt solid var(--border-color);
-            padding: 2px;
         }
 
-        .devolucao-triangulo {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 15mm solid transparent;
-            border-bottom: 15mm solid transparent;
-            border-left: 10mm solid var(--border-color);
-            display: flex;
-            align-items: center;
+        .seta-vermelha {
+            width: 0; 
+            height: 0; 
+            border-top: 12mm solid transparent;
+            border-bottom: 12mm solid transparent;
+            border-left: 8mm solid var(--correios-red);
+            position: relative;
         }
 
-        .devolucao-texto {
+        .seta-texto {
             position: absolute;
             transform: rotate(-90deg);
             white-space: nowrap;
-            font-size: 6pt;
             color: white;
-            left: -12mm;
-            font-weight: bold;
+            font-size: 5.5pt;
+            font-weight: 900;
+            left: -11mm;
+            top: 0;
+            width: 25mm;
+            text-align: center;
         }
 
         /* Layout de Impressão */
@@ -311,33 +311,33 @@
 
                         <div class="ar-cell col-span-8">
                             <span class="ar-label">Assinatura do Recebedor</span>
-                            <div class="mt-4 border-b border-black opacity-20"></div>
+                            <!-- Linha removida conforme solicitado -->
                         </div>
                         <div class="ar-cell col-span-2">
                             <span class="ar-label">Data de Rec.</span>
                             <div class="mt-4 flex gap-1 items-end">
-                                <span class="border-b border-black w-4"></span>/
-                                <span class="border-b border-black w-4"></span>/
-                                <span class="border-b border-black w-4"></span>
+                                <span class="border-b border-black w-3 opacity-30"></span>/
+                                <span class="border-b border-black w-3 opacity-30"></span>/
+                                <span class="border-b border-black w-3 opacity-30"></span>
                             </div>
                         </div>
                         <div class="ar-cell col-span-2 row-span-3 text-center">
                             <span class="ar-label">Carimbo</span>
-                            <div class="border border-dashed border-gray-300 h-16 mt-1"></div>
+                            <div class="border border-dashed border-gray-200 h-16 mt-1"></div>
                         </div>
 
                         <div class="ar-cell col-span-10">
                             <span class="ar-label">Nome Legível do Recebedor</span>
-                            <div class="mt-4 border-b border-black opacity-20"></div>
+                            <!-- Linha removida conforme solicitado -->
                         </div>
 
                         <div class="ar-cell col-span-5">
                             <span class="ar-label">Doc. Identificação</span>
-                            <div class="mt-4 border-b border-black opacity-20"></div>
+                            <!-- Linha removida conforme solicitado -->
                         </div>
                         <div class="ar-cell col-span-5">
                             <span class="ar-label">Rubrica/Mat. Empregado</span>
-                            <div class="mt-4 border-b border-black opacity-20"></div>
+                            <!-- Linha removida conforme solicitado -->
                         </div>
                     </div>
                     <div class="text-center font-bold text-red-600 mt-1 text-[7pt]">ENDEREÇO PARA DEVOLUÇÃO NO VERSO</div>
@@ -347,56 +347,61 @@
             <!-- Preview Verso (Remetente) -->
             <div>
                 <h2 class="text-xs font-bold text-gray-400 uppercase mb-2">Verso (Remetente / Postagem)</h2>
-                <div id="ar-verso-element" class="ar-card ar-verso opacity-60 scale-[0.75] origin-top md:scale-90 lg:scale-100">
+                <div id="ar-verso-element" class="ar-card ar-verso opacity-70 scale-[0.75] origin-top md:scale-90 lg:scale-100">
                     <div class="flex justify-between items-start border-b border-red-600 pb-1 mb-1">
                         <div class="flex gap-2 items-center">
                             <div class="logo-placeholder">CORREIOS</div>
-                            <div class="border border-red-600 p-1 text-[7pt] font-bold text-red-600 text-center">AVISO DE<br>RECEBIMENTO</div>
-                            <div class="text-2xl font-black text-red-600 ml-2">AR</div>
+                            <div class="border border-red-600 p-1 text-[7pt] font-bold text-red-600 text-center uppercase">Aviso de<br>Recebimento</div>
+                            <div class="text-3xl font-black text-red-600 ml-2">AR</div>
                         </div>
-                        <div class="text-[6pt] text-gray-400 font-bold italic">( CÓDIGO DE BARRAS OU Nº DE REGISTRO DO OBJETO )</div>
+                        <div class="text-[5.5pt] text-gray-400 font-bold italic pr-2">( CÓDIGO DE BARRAS OU Nº DE REGISTRO DO OBJETO )</div>
                     </div>
 
                     <div class="grid grid-cols-12 gap-0 border border-red-600">
-                        <div class="ar-cell col-span-5">
+                        <div class="ar-cell col-span-5 border-r border-red-600">
                             <span class="ar-label">Data de Postagem</span>
-                            <div class="mt-4 flex gap-1">___/___/___</div>
+                            <div class="mt-4 flex gap-1 font-bold">___ / ___ / ___</div>
                         </div>
-                        <div class="ar-cell col-span-7 border-l border-red-600 p-0">
-                            <div class="bg-gray-100 text-[6pt] font-bold text-red-600 text-center border-b border-red-600 py-0.5">TENTATIVAS DE ENTREGA</div>
+                        <div class="ar-cell col-span-7 p-0">
+                            <div class="bg-white text-[6pt] font-bold text-red-600 text-center border-b border-red-600 py-0.5">TENTATIVAS DE ENTREGA</div>
                             <div class="grid grid-cols-3 h-full">
-                                <div class="border-r border-red-600 p-1 flex flex-col justify-between">
-                                    <div class="text-[8pt]">__/ __ /__</div>
-                                    <div class="text-[8pt] text-right">___ : ___ h</div>
+                                <div class="border-r border-red-600 p-1">
+                                    <div class="text-[7pt] text-center font-bold mt-1">___ / ___ / ___</div>
                                 </div>
-                                <div class="border-r border-red-600 p-1 flex flex-col justify-between">
-                                    <div class="text-[8pt]">__/ __ /__</div>
-                                    <div class="text-[8pt] text-right">___ : ___ h</div>
+                                <div class="border-r border-red-600 p-1">
+                                    <div class="text-[7pt] text-center font-bold mt-1">___ / ___ / ___</div>
                                 </div>
-                                <div class="p-1 flex flex-col justify-between">
-                                    <div class="text-[8pt]">__/ __ /__</div>
-                                    <div class="text-[8pt] text-right">___ : ___ h</div>
+                                <div class="p-1">
+                                    <div class="text-[7pt] text-center font-bold mt-1">___ / ___ / ___</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="ar-cell col-span-5 h-10">
+                        <div class="ar-cell col-span-5 h-10 border-r border-red-600">
                             <span class="ar-label">Unidade de Postagem</span>
                         </div>
-                        <div class="col-span-7"></div>
+                        <div class="col-span-7 grid grid-cols-3 border-t border-red-600">
+                            <div class="border-r border-red-600 p-1 text-right text-[7pt] font-bold">____ : ____ h</div>
+                            <div class="border-r border-red-600 p-1 text-right text-[7pt] font-bold">____ : ____ h</div>
+                            <div class="p-1 text-right text-[7pt] font-bold">____ : ____ h</div>
+                        </div>
                     </div>
 
-                    <div class="mt-2 relative pl-8">
-                        <div class="devolucao-triangulo">
-                            <span class="devolucao-texto">ENDEREÇO PARA DEVOLUÇÃO</span>
+                    <div class="mt-2 relative pl-10">
+                        <!-- Seta Vermelha Ajustada conforme imagem -->
+                        <div class="seta-container">
+                            <div class="seta-vermelha">
+                                <div class="seta-texto uppercase">Endereço para Devolução</div>
+                            </div>
                         </div>
+
                         <div class="ar-grid">
                             <div class="ar-cell col-span-12">
                                 <span class="ar-label">Nome ou Razão Social do Remetente</span>
-                                <div class="h-4"></div>
+                                <div class="h-5"></div>
                             </div>
                             <div class="ar-cell col-span-12">
                                 <span class="ar-label">Endereço para Devolução</span>
-                                <div class="h-4"></div>
+                                <div class="h-5"></div>
                             </div>
                             <div class="ar-cell col-span-6">
                                 <span class="ar-label">Cidade</span>
@@ -407,17 +412,19 @@
                             <div class="ar-cell col-span-3">
                                 <span class="ar-label">CEP</span>
                             </div>
-                            <div class="ar-cell col-span-2 bg-gray-50 flex items-center justify-center font-bold text-red-600">BRASIL</div>
+                            <div class="ar-cell col-span-2 bg-white flex items-center justify-center font-black text-red-600 text-[10pt] border-l border-red-600">BRASIL</div>
                         </div>
-                        <div class="grid grid-cols-8 gap-1 mt-1">
-                            <div class="border border-red-600 h-6"></div>
-                            <div class="border border-red-600 h-6"></div>
-                            <div class="border border-red-600 h-6"></div>
-                            <div class="border border-red-600 h-6"></div>
-                            <div class="border border-red-600 h-6"></div>
-                            <div class="border border-red-600 h-6"></div>
-                            <div class="border border-red-600 h-6"></div>
-                            <div class="border border-red-600 h-6"></div>
+                        
+                        <!-- Caixas de Código na Base -->
+                        <div class="flex gap-1.5 mt-2 ml-1">
+                            <div class="border border-red-600 w-8 h-6"></div>
+                            <div class="border border-red-600 w-8 h-6"></div>
+                            <div class="border border-red-600 w-8 h-6"></div>
+                            <div class="border border-red-600 w-8 h-6"></div>
+                            <div class="border border-red-600 w-8 h-6"></div>
+                            <div class="border border-red-600 w-8 h-6"></div>
+                            <div class="border border-red-600 w-8 h-6"></div>
+                            <div class="border border-red-600 w-8 h-6"></div>
                         </div>
                     </div>
                 </div>
@@ -470,7 +477,7 @@
             
             // Limpa classes de preview
             [cloneFrente, cloneVerso].forEach(el => {
-                el.classList.remove('scale-[0.75]', 'md:scale-90', 'lg:scale-100', 'shadow-xl', 'opacity-60');
+                el.classList.remove('scale-[0.75]', 'md:scale-90', 'lg:scale-100', 'shadow-xl', 'opacity-70');
                 el.style.transform = 'none';
             });
 
