@@ -143,7 +143,7 @@
         .seta-container {
             position: absolute;
             left: 0mm;
-            top: 3mm; /* Subiu o alinhamento */
+            top: 7mm; /* Desceu um pouco o alinhamento */
             width: 10mm;
             height: 25mm;
             display: flex;
@@ -260,7 +260,7 @@
                 </div>
 
                 <div class="flex flex-wrap gap-3 pt-4">
-                    <button type="button" onclick="window.print()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2 transition">
+                    <button type="button" id="btnImprimir" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2 transition">
                         Gerar PDF / Imprimir
                     </button>
                     <button type="reset" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg font-semibold transition">
@@ -325,12 +325,13 @@
                     </div>
                     <div class="ar-cell col-span-2 linha-assinatura flex flex-col justify-between pb-1">
                         <span class="ar-label">Data de Rec.</span>
-                        <div class="mt-auto flex justify-center items-end text-[6.5pt] font-bold text-gray-500 tracking-wider">
-                            ______ / ______ / ________
+                        <div class="mt-auto flex justify-center items-end text-[7pt] font-bold text-gray-500 tracking-wider">
+                            <!-- Data diminuida e re-espaçada -->
+                            ____&nbsp;&nbsp;/&nbsp;&nbsp;____&nbsp;&nbsp;/&nbsp;&nbsp;____
                         </div>
                     </div>
-                    <!-- Carimbo ajustado com Absolute para não esticar a grade e alinhar com precisão -->
-                    <div class="ar-cell col-span-2 row-span-3 text-center relative">
+                    <!-- Carimbo ajustado com overflow hidden para não vazar a borda -->
+                    <div class="ar-cell col-span-2 row-span-3 text-center relative overflow-hidden">
                         <span class="ar-label">Carimbo</span>
                         <div class="border border-dashed border-gray-200 absolute top-[5mm] bottom-1 left-1 right-1"></div>
                     </div>
@@ -382,8 +383,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ar-cell col-span-5 h-10 flex flex-col justify-center">
-                            <span class="ar-label">Unidade de Postagem</span>
+                        <div class="ar-cell col-span-5 h-10 flex flex-col justify-start">
+                            <!-- Unidade de Postagem no topo à esquerda -->
+                            <span class="ar-label text-left">Unidade de Postagem</span>
                         </div>
                         <div class="ar-cell col-span-7 p-0 grid grid-cols-3">
                             <div class="border-r border-[#cc0000] p-1 flex items-center justify-center text-[7pt] font-bold h-full">____ : ____ h</div>
@@ -437,6 +439,9 @@
     <div id="print-area" class="hidden print-container"></div>
 
     <script>
+        // Título original da página
+        const originalTitle = document.title;
+
         // Sincronização UI -> Frente
         const fields = [
             { id: 'in_nome', view: 'view_nome' },
@@ -463,6 +468,19 @@
         document.getElementById('in_cep').addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,5})(\d{0,3})/);
             e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
+        });
+
+        // Evento de Imprimir Customizado para alterar o nome do arquivo
+        document.getElementById('btnImprimir').addEventListener('click', function() {
+            const nomeDestinatario = document.getElementById('in_nome').value.trim().toUpperCase();
+            
+            if (nomeDestinatario) {
+                document.title = `A.R. - ${nomeDestinatario}`;
+            } else {
+                document.title = `A.R. - DESTINATÁRIO NÃO INFORMADO`;
+            }
+
+            window.print();
         });
 
         // Preparação para Impressão
@@ -493,6 +511,8 @@
 
     window.onafterprint = function() {
             document.getElementById('print-area').classList.add('hidden');
+            // Retorna o título original após a impressão/salvar PDF
+            document.title = originalTitle;
         };
     </script>
 </body>
