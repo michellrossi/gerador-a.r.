@@ -505,9 +505,13 @@
             el.style.transform = 'none';
         });
 
+        // Rotaciona a Face 2 (Verso) em 180 graus para ficar de ponta-cabeça na impressão
+        cloneVerso.style.transform = 'rotate(180deg)';
+
         // Une as bordas das duas faces para a dobra perfeita
+        // Como o verso está rotacionado, a borda "bottom" física dele é a que encosta na frente visualmente
         cloneFrente.style.borderBottomWidth = '1px';
-        cloneVerso.style.borderTopWidth = '1px';
+        cloneVerso.style.borderBottomWidth = '1px';
 
         printArea.appendChild(cloneFrente);
         printArea.appendChild(cloneVerso);
