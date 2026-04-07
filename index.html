@@ -473,8 +473,10 @@
             const cloneVerso = verso.cloneNode(true);
         
             [cloneFrente, cloneVerso].forEach(el => {
-                el.classList.remove('scale-[0.75]', 'md:scale-90', 'lg:scale-100', 'shadow-xl', 'opacity-70');
+                // IMPORTANT: Removed 'origin-top' from removal to ensure we explicitly set transformOrigin
+                el.classList.remove('scale-[0.75]', 'md:scale-90', 'lg:scale-100', 'shadow-xl', 'opacity-70', 'origin-top');
                 el.style.transform = 'none';
+                el.style.transformOrigin = 'center'; // Fixes the rotation axis to the center
             });
 
             cloneVerso.style.transform = 'rotate(180deg)';
