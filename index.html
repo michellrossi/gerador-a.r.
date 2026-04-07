@@ -219,7 +219,7 @@
                 <h1 class="text-2xl font-bold text-gray-800">Gerador de AR</h1>
             </div>
 
-            <p class="text-sm text-gray-500 mb-4">Preencha os dados do destinatário. O verso (remetente) será gerado automaticamente para impressão.</p>
+            <p class="text-sm text-gray-500 mb-4">Preencha os dados do destinatário. O verso (remetente) já possui os dados da subprefeitura pré-preenchidos para impressão.</p>
 
             <form id="arForm" class="space-y-4">
                 <div class="input-group">
@@ -355,13 +355,14 @@
             <div>
             <h2 class="text-xs font-bold text-gray-400 uppercase mb-2">Verso (Remetente / Postagem)</h2>
             <div id="ar-verso-element" class="ar-card ar-verso opacity-70 scale-[0.75] origin-top md:scale-90 lg:scale-100">
-                <div class="flex justify-between items-start border-b border-red-600 pb-1 mb-1">
-                    <div class="flex gap-2 items-center">
+                <!-- Cabeçalho com mais espaço vertical (min-h aumentado) -->
+                <div class="flex justify-between items-start border-b border-red-600 pb-2 mb-2 min-h-[16mm]">
+                    <div class="flex gap-2 items-start">
                         <img src="https://iili.io/B71iY5F.webp" alt="Correios" class="h-[20px] object-contain">
                         <div class="border border-red-600 p-1 text-[7pt] font-bold text-red-600 text-center uppercase">Aviso de<br>Recebimento</div>
-                        <div class="text-3xl font-black text-red-600 ml-2">AR</div>
+                        <div class="text-3xl font-black text-red-600 ml-2 leading-none">AR</div>
                     </div>
-                    <div class="text-[5.5pt] text-gray-400 font-bold italic pr-2">( CÓDIGO DE BARRAS OU Nº DE REGISTRO DO OBJETO )</div>
+                    <div class="text-[5.5pt] text-gray-400 font-bold italic pr-2 mt-auto">( CÓDIGO DE BARRAS OU Nº DE REGISTRO DO OBJETO )</div>
                 </div>
 
                 <div class="ar-grid">
@@ -404,30 +405,34 @@
                         <div class="ar-grid">
                             <div class="ar-cell col-span-12 linha-remetente flex flex-col">
                                 <span class="ar-label">Nome ou Razão Social do Remetente</span>
+                                <div class="flex-grow flex items-end pb-0.5 pl-1 font-bold text-[9pt]">SUBPREFEITURA PENHA</div>
                             </div>
                             <div class="ar-cell col-span-12 linha-remetente flex flex-col">
                                 <span class="ar-label">Endereço para Devolução</span>
+                                <div class="flex-grow flex items-end pb-0.5 pl-1 font-bold text-[9pt]">RUA CANDAPUÍ, 492 - VILA MARIETA</div>
                             </div>
                             <div class="ar-cell col-span-9 linha-remetente flex flex-col">
                                 <span class="ar-label">Cidade</span>
+                                <div class="flex-grow flex items-end pb-0.5 pl-1 font-bold text-[9pt]">SÃO PAULO</div>
                             </div>
                             <div class="ar-cell col-span-1 linha-remetente flex flex-col">
                                 <span class="ar-label">UF</span>
+                                <div class="flex-grow flex items-end justify-center pb-0.5 font-bold text-[9pt]">SP</div>
                             </div>
                             <div class="ar-cell col-span-2 bg-white flex items-center justify-center font-black text-red-600 text-[10pt] linha-remetente">BRASIL</div>
                         </div>
                         
-                        <!-- Caixas de Código na Base -->
+                        <!-- Caixas de Código na Base preenchidas com o CEP 03621-000 -->
                         <div class="flex gap-1.5 mt-2 ml-1 items-center">
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">0</div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">3</div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">6</div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">2</div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">1</div>
                             <span class="text-[#cc0000] font-bold mx-0.5">-</span>
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
-                            <div class="border border-[#cc0000] w-8 h-6"></div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">0</div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">0</div>
+                            <div class="border border-[#cc0000] w-8 h-6 flex items-center justify-center font-bold text-[10pt]">0</div>
                         </div>
                     </div>
                 </div>
