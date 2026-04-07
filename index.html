@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerador de AR - Correios</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Fonte -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
         :root {
             --correios-red: #cc0000;
@@ -25,7 +25,7 @@
             width: 186mm;
             height: 114mm;
             background: white;
-            border: 2px solid var(--border-color); /* Borda externa principal */
+            border: 2px solid var(--border-color);
             position: relative;
             box-sizing: border-box;
             padding: 2mm;
@@ -36,13 +36,11 @@
             display: block;
         }
 
-        /* Lado A: Destinatário */
         .ar-frente {
             display: grid;
             grid-template-rows: auto auto 1fr auto;
         }
 
-        /* Lado B: Verso (Remetente) */
         .ar-verso {
             display: grid;
             grid-template-rows: auto auto 1fr;
@@ -74,7 +72,7 @@
             margin-bottom: 1px;
         }
 
-        /* Ajuste de Grade para Linhas Uniformes (1px exato em todas) */
+        /* Ajuste de Grade para Linhas Uniformes */
         .ar-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -117,33 +115,15 @@
             gap: 5px;
         }
 
-        /* Travamento da altura para alinhar perfeitamente as linhas */
-        .linha-assinatura {
+        .linha-assinatura, .linha-remetente {
             height: 12mm;
-        }
-
-        .linha-remetente {
-            height: 12mm;
-        }
-
-        .logo-placeholder {
-            width: 35px;
-            height: 22px;
-            background: var(--correios-red);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 5pt;
-            border-radius: 2px;
         }
 
         /* Elementos específicos do Verso - Seta Lateral */
         .seta-container {
             position: absolute;
             left: 0mm;
-            top: 7mm; /* Desceu um pouco o alinhamento */
+            top: 7mm;
             width: 10mm;
             height: 25mm;
             display: flex;
@@ -224,39 +204,39 @@
             <form id="arForm" class="space-y-4">
                 <div class="input-group">
                     <label>Nome do Destinatário</label>
-                    <input type="text" id="in_nome" placeholder="Nome Completo">
+                    <input type="text" id="in_nome" placeholder="Nome Completo" />
                 </div>
                 
                 <div class="input-group">
                     <label>Endereço</label>
-                    <input type="text" id="in_endereco" placeholder="Rua, número, bairro...">
+                    <input type="text" id="in_endereco" placeholder="Rua, número, bairro..." />
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="input-group">
                         <label>CEP</label>
-                        <input type="text" id="in_cep" placeholder="00000-000" maxlength="9">
+                        <input type="text" id="in_cep" placeholder="00000-000" maxlength="9" />
                     </div>
                     <div class="input-group">
                         <label>Cidade</label>
-                        <input type="text" id="in_cidade" placeholder="Cidade">
+                        <input type="text" id="in_cidade" placeholder="Cidade" />
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="input-group">
                         <label>UF</label>
-                        <input type="text" id="in_uf" placeholder="UF" maxlength="2">
+                        <input type="text" id="in_uf" placeholder="UF" maxlength="2" />
                     </div>
                     <div class="input-group">
                         <label>País</label>
-                        <input type="text" id="in_pais" value="BRASIL">
+                        <input type="text" id="in_pais" value="BRASIL" />
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label>Declaração de Conteúdo</label>
-                    <input type="text" id="in_conteudo" placeholder="Opcional">
+                    <input type="text" id="in_conteudo" placeholder="Opcional" />
                 </div>
 
                 <div class="flex flex-wrap gap-3 pt-4">
@@ -273,18 +253,18 @@
         <!-- Coluna de Preview (Frente) -->
         <div class="space-y-8">
             <div>
-            <h2 class="text-xs font-bold text-gray-400 uppercase mb-2">Frente (Destinatário)</h2>
-            <div id="ar-frente-element" class="ar-card ar-frente shadow-xl scale-[0.75] origin-top md:scale-90 lg:scale-100">
-                <div class="ar-header">
-                    <div class="logo-box">
-                        <img src="https://iili.io/B71iY5F.webp" alt="Correios" class="h-[20px] object-contain">
+                <h2 class="text-xs font-bold text-gray-400 uppercase mb-2">Frente (Destinatário)</h2>
+                <div id="ar-frente-element" class="ar-card ar-frente shadow-xl scale-[0.75] origin-top md:scale-90 lg:scale-100">
+                    <div class="ar-header">
+                        <div class="logo-box">
+                            <img src="https://iili.io/B71iY5F.webp" alt="Correios" class="h-[20px] object-contain" />
+                        </div>
+                        <div class="ar-title">Aviso de Recebimento</div>
+                        <div class="text-[5pt] text-right font-bold text-red-600 leading-tight">PREENCHER COM<br />LETRA DE FORMA</div>
                     </div>
-                    <div class="ar-title">Aviso de Recebimento</div>
-                    <div class="text-[5pt] text-right font-bold text-red-600 leading-tight">PREENCHER COM<br>LETRA DE FORMA</div>
-                </div>
 
-                <div class="ar-section-title">Destinatário do Objeto</div>
-                    
+                    <div class="ar-section-title">Destinatário do Objeto</div>
+                        
                     <div class="ar-grid">
                         <div class="ar-cell col-span-12">
                             <span class="ar-label">Nome ou Razão Social do Destinatário</span>
@@ -316,56 +296,53 @@
                             DOU CIÊNCIA DOS DADOS COLETADOS NO ATO DA ENTREGA DO OBJETO, QUE PODERÃO SER UTILIZADOS PARA FINS DE COMPROVAÇÃO DA PRESTAÇÃO DO SERVIÇO.
                         </div>
                         <div class="ar-cell col-span-5 row-span-2">
-                        <span class="ar-label">Declaração de Conteúdo (Opcional)</span>
-                        <div class="ar-value text-[7pt]" id="view_conteudo">---</div>
-                    </div>
+                            <span class="ar-label">Declaração de Conteúdo (Opcional)</span>
+                            <div class="ar-value text-[7pt]" id="view_conteudo">---</div>
+                        </div>
 
-                    <div class="ar-cell col-span-8 linha-assinatura flex flex-col justify-between">
-                        <span class="ar-label">Assinatura do Recebedor</span>
-                    </div>
-                    <div class="ar-cell col-span-2 linha-assinatura flex flex-col justify-between pb-1">
-                        <span class="ar-label">Data de Rec.</span>
-                        <div class="mt-auto flex justify-center items-end text-[7pt] font-bold text-gray-500 tracking-wider">
-                            <!-- Data diminuida e re-espaçada -->
-                            ____&nbsp;&nbsp;/&nbsp;&nbsp;____&nbsp;&nbsp;/&nbsp;&nbsp;____
+                        <div class="ar-cell col-span-8 linha-assinatura flex flex-col justify-between">
+                            <span class="ar-label">Assinatura do Recebedor</span>
+                        </div>
+                        <div class="ar-cell col-span-2 linha-assinatura flex flex-col justify-between pb-1">
+                            <span class="ar-label">Data de Rec.</span>
+                            <div class="mt-auto flex justify-center items-end text-[7pt] font-bold text-gray-500 tracking-wider">
+                                ____&nbsp;&nbsp;/&nbsp;&nbsp;____&nbsp;&nbsp;/&nbsp;&nbsp;____
+                            </div>
+                        </div>
+                        <div class="ar-cell col-span-2 row-span-3 text-center relative overflow-hidden">
+                            <span class="ar-label">Carimbo</span>
+                            <div class="border border-dashed border-gray-200 absolute top-[5mm] bottom-1 left-1 right-1"></div>
+                        </div>
+
+                        <div class="ar-cell col-span-10 linha-assinatura flex flex-col justify-between">
+                            <span class="ar-label">Nome Legível do Recebedor</span>
+                        </div>
+
+                        <div class="ar-cell col-span-5 linha-assinatura flex flex-col justify-between">
+                            <span class="ar-label">Doc. Identificação</span>
+                        </div>
+                        <div class="ar-cell col-span-5 linha-assinatura flex flex-col justify-between">
+                            <span class="ar-label">Rubrica/Mat. Empregado</span>
                         </div>
                     </div>
-                    <!-- Carimbo ajustado com overflow hidden para não vazar a borda -->
-                    <div class="ar-cell col-span-2 row-span-3 text-center relative overflow-hidden">
-                        <span class="ar-label">Carimbo</span>
-                        <div class="border border-dashed border-gray-200 absolute top-[5mm] bottom-1 left-1 right-1"></div>
-                    </div>
-
-                    <div class="ar-cell col-span-10 linha-assinatura flex flex-col justify-between">
-                        <span class="ar-label">Nome Legível do Recebedor</span>
-                    </div>
-
-                    <div class="ar-cell col-span-5 linha-assinatura flex flex-col justify-between">
-                        <span class="ar-label">Doc. Identificação</span>
-                    </div>
-                    <div class="ar-cell col-span-5 linha-assinatura flex flex-col justify-between">
-                        <span class="ar-label">Rubrica/Mat. Empregado</span>
-                    </div>
-                </div>
-                <div class="text-center font-bold text-red-600 mt-1 text-[7pt]">ENDEREÇO PARA DEVOLUÇÃO NO VERSO</div>
+                    <div class="text-center font-bold text-red-600 mt-1 text-[7pt]">ENDEREÇO PARA DEVOLUÇÃO NO VERSO</div>
                 </div>
             </div>
 
             <!-- Preview Verso (Remetente) -->
             <div>
-            <h2 class="text-xs font-bold text-gray-400 uppercase mb-2">Verso (Remetente / Postagem)</h2>
-            <div id="ar-verso-element" class="ar-card ar-verso opacity-70 scale-[0.75] origin-top md:scale-90 lg:scale-100">
-                <!-- Cabeçalho com mais espaço vertical (min-h aumentado) -->
-                <div class="flex justify-between items-start border-b border-red-600 pb-2 mb-2 min-h-[16mm]">
-                    <div class="flex gap-2 items-start">
-                        <img src="https://iili.io/B71iY5F.webp" alt="Correios" class="h-[20px] object-contain">
-                        <div class="border border-red-600 p-1 text-[7pt] font-bold text-red-600 text-center uppercase">Aviso de<br>Recebimento</div>
-                        <div class="text-3xl font-black text-red-600 ml-2 leading-none">AR</div>
+                <h2 class="text-xs font-bold text-gray-400 uppercase mb-2">Verso (Remetente / Postagem)</h2>
+                <div id="ar-verso-element" class="ar-card ar-verso opacity-70 scale-[0.75] origin-top md:scale-90 lg:scale-100">
+                    <div class="flex justify-between items-start border-b border-red-600 pb-2 mb-2 min-h-[16mm]">
+                        <div class="flex gap-2 items-start">
+                            <img src="https://iili.io/B71iY5F.webp" alt="Correios" class="h-[20px] object-contain" />
+                            <div class="border border-red-600 p-1 text-[7pt] font-bold text-red-600 text-center uppercase">Aviso de<br />Recebimento</div>
+                            <div class="text-3xl font-black text-red-600 ml-2 leading-none">AR</div>
+                        </div>
+                        <div class="text-[5.5pt] text-gray-400 font-bold italic pr-2 mt-auto">( CÓDIGO DE BARRAS OU Nº DE REGISTRO DO OBJETO )</div>
                     </div>
-                    <div class="text-[5.5pt] text-gray-400 font-bold italic pr-2 mt-auto">( CÓDIGO DE BARRAS OU Nº DE REGISTRO DO OBJETO )</div>
-                </div>
 
-                <div class="ar-grid">
+                    <div class="ar-grid">
                         <div class="ar-cell col-span-5 flex flex-col">
                             <span class="ar-label">Data de Postagem</span>
                             <div class="flex-grow flex items-center justify-center font-bold text-[7.5pt] text-gray-600 tracking-wider">______ / ______ / ________</div>
@@ -385,7 +362,6 @@
                             </div>
                         </div>
                         <div class="ar-cell col-span-5 h-10 flex flex-col justify-start">
-                            <!-- Unidade de Postagem no topo à esquerda -->
                             <span class="ar-label text-left">Unidade de Postagem</span>
                         </div>
                         <div class="ar-cell col-span-7 p-0 grid grid-cols-3">
@@ -393,9 +369,9 @@
                             <div class="border-r border-[#cc0000] p-1 flex items-center justify-center text-[7pt] font-bold h-full">____ : ____ h</div>
                             <div class="p-1 flex items-center justify-center text-[7pt] font-bold h-full">____ : ____ h</div>
                         </div>
-                </div>
+                    </div>
 
-                <div class="mt-2 relative pl-10">
+                    <div class="mt-2 relative pl-10">
                         <div class="seta-container">
                             <div class="seta-vermelha">
                                 <div class="seta-texto uppercase">Endereço para Devolução</div>
@@ -444,10 +420,8 @@
     <div id="print-area" class="hidden print-container"></div>
 
     <script>
-        // Título original da página
         const originalTitle = document.title;
 
-        // Sincronização UI -> Frente
         const fields = [
             { id: 'in_nome', view: 'view_nome' },
             { id: 'in_endereco', view: 'view_endereco' },
@@ -469,13 +443,13 @@
             });
         });
 
-        // Máscara de CEP
         document.getElementById('in_cep').addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,5})(\d{0,3})/);
-            e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
+            if(x) {
+                e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
+            }
         });
 
-        // Evento de Imprimir Customizado para alterar o nome do arquivo
         document.getElementById('btnImprimir').addEventListener('click', function() {
             const nomeDestinatario = document.getElementById('in_nome').value.trim().toUpperCase();
             
@@ -488,7 +462,6 @@
             window.print();
         });
 
-        // Preparação para Impressão
         window.onbeforeprint = function() {
             const printArea = document.getElementById('print-area');
             const frente = document.getElementById('ar-frente-element');
@@ -499,28 +472,23 @@
             const cloneFrente = frente.cloneNode(true);
             const cloneVerso = verso.cloneNode(true);
         
-        // Limpa classes de preview
-        [cloneFrente, cloneVerso].forEach(el => {
-            el.classList.remove('scale-[0.75]', 'md:scale-90', 'lg:scale-100', 'shadow-xl', 'opacity-70');
-            el.style.transform = 'none';
-        });
+            [cloneFrente, cloneVerso].forEach(el => {
+                el.classList.remove('scale-[0.75]', 'md:scale-90', 'lg:scale-100', 'shadow-xl', 'opacity-70');
+                el.style.transform = 'none';
+            });
 
-        // Rotaciona a Face 2 (Verso) em 180 graus para ficar de ponta-cabeça na impressão
-        cloneVerso.style.transform = 'rotate(180deg)';
+            cloneVerso.style.transform = 'rotate(180deg)';
 
-        // Une as bordas das duas faces para a dobra perfeita
-        // Como o verso está rotacionado, a borda "bottom" física dele é a que encosta na frente visualmente
-        cloneFrente.style.borderBottomWidth = '1px';
-        cloneVerso.style.borderBottomWidth = '1px';
+            cloneFrente.style.borderBottomWidth = '1px';
+            cloneVerso.style.borderBottomWidth = '1px';
 
-        printArea.appendChild(cloneFrente);
-        printArea.appendChild(cloneVerso);
-        printArea.classList.remove('hidden');
-    };
+            printArea.appendChild(cloneFrente);
+            printArea.appendChild(cloneVerso);
+            printArea.classList.remove('hidden');
+        };
 
-    window.onafterprint = function() {
+        window.onafterprint = function() {
             document.getElementById('print-area').classList.add('hidden');
-            // Retorna o título original após a impressão/salvar PDF
             document.title = originalTitle;
         };
     </script>
